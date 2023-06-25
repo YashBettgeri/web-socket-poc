@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>trading service</title>
+
+  <style>
+
+        *
+        {
+            margin:0px;
+            padding: 0px;
+            box-sizing: border-box;
+        }
+
+        .top-screen
+        {
+            width: 100%;
+            min-height: 50px;
+            background-color: lightgray;
+            padding-left: 2%;
+            line-height: 50px;
+            margin-bottom: 10px;
+        }
+
+        .centre-vertical-line
+        {
+            border-left: 2px solid black;
+            height: 90%;
+            top: 50px;
+            left: 50%;
+            position: absolute
+        }
+
+        .main
+        {
+            width:100%;
+            background-color: gray;
+        }
+
+        .left-screen
+        {
+            width: 50%;
+            height: 100%;
+            /* background-color: lightgray; */
+            float: left;
+            padding-left: 20px;
+
+        }
+
+        .right-screen
+        {
+            width: 50%;
+            height: 100%;
+            /* background-color: lightgray; */
+            float: right;
+        }
+
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+            text-align: center;
+
+
+        }
+
+        .positions
+        {
+            width:30%;
+            min-width: 100px;
+            margin-bottom: 20px;
+        }
+
+        .order-book
+        {
+            width: 80%;
+            margin:auto;
+            min-width: 100px;
+            margin-bottom: 20px;
+        }
+
+        .screen-heading
+        {
+
+            text-align: centre;
+        }
+
+    </style>
+
+  <script src="yash.js"></script>
+</head>
+<body onload="build();">
+
+
+<div class="top-screen">
+  <h1>Trading Service</h1>
+</div>
+
+<!-- centre line -->
+<div class="centre-vertical-line"></div>
+
+
+<div class="main">
+  <div class="left-screen">
+    <div style="text-align: center; margin-bottom: 10px;">
+      <h2>Positions</h2>
+    </div>
+
+    <div id="table-container-positions"></div>
+  </div>
+
+  <div class="right-screen">
+    <div style="text-align: center; margin-bottom: 10px;">
+      <h2>Book of Orders</h2>
+    </div>
+
+    <div id="table-container-order-book"></div>
+  </div>
+
+</div>
+
+</body>
+</html>
+
+<!-- <table class="positions">
+    <thead>
+        <tr>
+            <th colspan="2">Wells Fargo</th>
+        </tr>
+
+        <tr>
+            <th>Currency</th>
+            <th>Value</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <tr>
+            <td>USD</td>
+            <td>1230</td>
+        </tr>
+        <tr>
+            <td>EUR</td>
+            <td>1720</td>
+        </tr>
+        <tr>
+            <td>JPY</td>
+            <td>10</td>
+        </tr>
+        <tr>
+            <td>INR</td>
+            <td>123450</td>
+        </tr>
+    </tbody>
+</table> -->
+
+
+
+
+
+<!-- <table class="order-book">
+<thead>
+<tr>
+<th colspan="4">EUR/USD</th>
+</tr>
+
+<tr>
+<th colspan="2">BUY</th>
+<th colspan="2">SELL</th>
+</tr>
+
+<tr>
+<th>Price</th>
+<th>Quantity</th>
+<th>Price</th>
+<th>Quantity</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>1.6024</td>
+<td>30</td>
+<td>1.60</td>
+<td>5093</td>
+</tr>
+</tbody>
+</table> -->

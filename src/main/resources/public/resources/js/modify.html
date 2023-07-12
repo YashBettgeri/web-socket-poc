@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+<p id="myParagraph">This is some text content.</p>
+<div id="dropdownDiv">
+  <select id="dropdown">
+    <option value="">-- Select an option --</option>
+    <option value="1">Option 1</option>
+    <option value="2">Option 2</option>
+    <option value="3">Option 3</option>
+  </select>
+</div>
+
+<div id="tableDiv" style="display: none;">
+  <table id="dataTable">
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Modify</th>
+    </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+</div>
+
+<script>
+
+const paragraph = document.getElementById('myParagraph');
+console.log(paragraph.textContent); // Output: "This is some text content."
+
+paragraph.textContent = "Updated text content.";
+console.log(paragraph.textContent); // Output: "Updated text content."
+
+
+
+        // Event listener for dropdown change
+document.getElementById('dropdown').addEventListener('change', function() {
+  var selectedOption = this.value;
+
+  if (selectedOption) {
+    // Send GET request to server
+    fetch("http://localhost:8080/modify?option=" + selectedOption)
+      .then(function(response) {
+        return response.json();
+      })
+      .then(function(data) {
+        // Build and display table
+        buildTable(data);
+      })
+      .catch(function(error) {
+        console.log('Error:', error);
+      });
+  }
+});
+
+// Function to build and display the table
+function buildTable(data) {
+  var table = document.getElementById('dataTable');
+  var tbody = table.getElementsByTagName('tbody')[0];
+  tbody.innerHTML = '';
+
+  data.forEach(function(row) {
+    var newRow = tbody.insertRow();
+    var idCell = newRow.insertCell();
+    var nameCell = newRow.insertCell();
+    var emailCell = newRow.insertCell();
+    var modifyCell = newRow.insertCell();
+
+    idCell.textContent = row.id;
+
+    var nameInputElement = document.createElement("input");
+    nameInputElement.value = row.name;
+    nameInputElement.id="name-input"
+    nameCell.appendChild(nameInputElement);
+
+    var emailInputElement = document.createElement("input");
+    emailInputElement.value = row.name;
+    emailInputElement.id="email-input"
+    emailCell.appendChild(emailInputElement);
+
+    var modifyButton = document.createElement('button');
+    modifyButton.textContent = 'Modify';
+    modifyButton.addEventListener('click', function() {
+      // Handle modify button click
+      var modifiedData = {
+        id: row.id,
+        name: nameInputElement.value,
+        email: emailInputElement.value
+      };
+
+      // Send POST request to server with modified data
+      fetch('http://localhost:8080/modify', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(modifiedData)
+      })
+        .then(function(response) {
+          // Handle the response
+          console.log('POST request successful');
+          console.log(modifiedData);
+        })
+        .catch(function(error) {
+          console.error('Error:', error);
+        });
+    });
+
+    modifyCell.appendChild(modifyButton);
+  });
+
+  document.getElementById('dropdownDiv').style.display = 'none';
+  document.getElementById('tableDiv').style.display = 'block';
+}
+      </script>
+</body>
+</html>

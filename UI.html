@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="resources/css/table.css">
+    <link rel="stylesheet" href="resources/css/order-form.css">
+        
+</head>
+<body>
+    <div class="title"><h2>Macro Alpha Project <button onclick="test();">search</button></h2>
+    </div>
+
+    <div class="header">
+        <div class="navigation">
+            <button id="new-order-button"> New Order</button>
+        </div>
+        <div class="search"> Search bar</div>
+    </div>
+
+    <div class="main-content">
+        <table id="orders-table" class="orders-table">
+            <thead>
+                <tr>
+                    <th>Order ID</th>
+                    <th>Order Type</th>
+                    <th>Currency Pair</th>
+                    <th>Order Side</th>
+                    <th>Limit Price</th>
+                    <th>Status</th>
+                    <th>Total Quantity</th>
+                    <th>Executed Quantity</th>
+                    <th>Execution Type</th>
+                    <th>Strategy</th>
+                    <th>Child Orders</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- <tr class="parent-orders">
+                    <td>12349</td>
+                    <td>SL</td>
+                    <td>EUR/USD</td>
+                    <td>Buy</td>
+                    <td>1.2345</td>
+                    <td>Active</td>
+                    <td>1000</td>
+                    <td>100</td>
+                    <td>Aggressive</td>
+                    <td>TWAP</td>
+                    <td><button onclick="showChildOrders(1)">Child Orders</button></td>
+                </tr>
+    
+                <tr></tr>
+    
+                <tr class="parent-orders">
+                    <td>12346</td>
+                    <td>SL</td>
+                    <td>EUR/USD</td>
+                    <td>Buy</td>
+                    <td>1.2345</td>
+                    <td>Active</td>
+                    <td>1000</td>
+                    <td>100</td>
+                    <td>Aggressive</td>
+                    <td>TWAP</td>
+                    <td><button onclick="showChildOrders(3)">Child Orders</button></td>
+                </tr>
+    
+                <tr></tr>
+
+                <tr class="parent-orders">
+                    <td>12345</td>
+                    <td>SL</td>
+                    <td>EUR/USD</td>
+                    <td>Buy</td>
+                    <td>1.2345</td>
+                    <td>Active</td>
+                    <td>1000</td>
+                    <td>100</td>
+                    <td>Aggressive</td>
+                    <td>TWAP</td>
+                    <td><button onclick="showChildOrders(5)">Child Orders</button></td>
+                </tr>
+    
+                <tr></tr> -->
+    
+            </tbody>
+        </table>
+    </div>
+
+
+
+    <!-- Order window HTML -->
+    <div class="new-order-window">
+        <div class="close-button" id="close-button">&times;</div>
+        <form class="form" id="new-order-form" enctype="application/json">
+            <h2>New Order</h2>
+            <div class="form-element">
+                <label for="order-type">Order Type</label>
+                <select name="order-type" id="order-type">
+                    <option value="" disabled selected>Select Order Type</option>
+                    <option value="SL">SL</option>
+                    <option value="TP">TP</option>
+                    <option value="Call">Call</option>
+                </select>
+            </div>
+            <div class="form-element">
+                <label for="currency-pair">Currency Pair</label>
+                <select name="currency-pair" id="currency-pair">
+                    <option value="" disabled selected>Select Currency Pair</option>
+                    <option value="EUR/USD">EUR/USD</option>
+                    <option value="USD/CAD">USD/CAD</option>
+                    <option value="USD/JPY">USD/JPY</option>
+                </select>
+            </div>
+            <div class="form-element">
+                <label for="side">Side</label>
+                <div>
+                    <input type="radio" name="side" id="side" value="BUY">Buy
+                    <input type="radio" name="side" id="side" value="SELL">Sell
+                </div>
+            </div>   
+            <div class="form-element">
+                <label for="strategy">Strategy</label>
+                <select name="strategy" id="strategy">
+                    <option value="" disabled selected>Select Strategy</option>
+                    <option value="Iceberg">Iceberg</option>
+                    <option value="PEG">PEG</option>
+                    <option value="SEEK">SEEK</option>
+                    <option value="SWEEP">SWEEP</option>
+                    <option value="TWAP">TWAP</option>            
+                </select>
+            </div> 
+            <div class="form-element">
+                <label for="price">Limit Price</label>
+                <input type="text" name="price" id="price" placeholder="Enter Limit Price">
+            </div>
+            <div class="form-element">
+                <label for="quantity">Quantity</label>
+                <input type="text" name="qty" id="quantity" placeholder="Enter Quantity">
+            </div>
+            <div class="submit-button" id="submit-button">
+                <button type="submit" onclick="send();" >Submit</button>
+            </div>
+        </form>
+    </div>
+
+
+    <script src="resources/js/table.js"></script>
+    <script src="resources/js/order-form.js"></script>
+
+    <script>
+        function sortTableByColumn(table, column, asc = true) {
+    const dirModifier = asc ? 1 : -1;
+    const tBody = table.tBodies[0];
+    const rows = Array.from(tBody.querySelectorAll("tr"));
+
+    // Sort each row
+    const sortedRows = rows.sort((a, b) => {
+        const aColText = a.querySelector(`td:nth-child(${column + 1})`).textContent.trim();
+        const bColText = b.querySelector(`td:nth-child(${column + 1})`).textContent.trim();
+
+        return aColText > bColText ? (1 * dirModifier) : (-1 * dirModifier);
+    });
+
+    // Remove all existing TRs from the table
+    while (tBody.firstChild) {
+        tBody.removeChild(tBody.firstChild);
+    }
+
+    // Re-add the newly sorted rows
+    tBody.append(...sortedRows);
+
+    // Remember how the column is currently sorted
+    table.querySelectorAll("th").forEach(th => th.classList.remove("th-sort-asc", "th-sort-desc"));
+    table.querySelector(`th:nth-child(${column + 1})`).classList.toggle("th-sort-asc", asc);
+    table.querySelector(`th:nth-child(${column + 1})`).classList.toggle("th-sort-desc", !asc);
+}
+
+document.querySelectorAll(".orders-table th").forEach(headerCell => {
+    headerCell.addEventListener("click", () => {
+        const tableElement = headerCell.parentElement.parentElement.parentElement;
+        const headerIndex = Array.prototype.indexOf.call(headerCell.parentElement.children, headerCell);
+        const currentIsAscending = headerCell.classList.contains("th-sort-asc");
+
+        sortTableByColumn(tableElement, headerIndex, !currentIsAscending);
+    });
+});
+    </script>
+
+</body>
+</html>
